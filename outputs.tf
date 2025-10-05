@@ -10,3 +10,6 @@ output "connection_string" {
   value = "'ssh -i ${var.ssh_private_key_file} ${var.ec2_username}@${aws_eip.openvpn_eip.public_dns}'"
 }
 
+output "ovpn_client_config_dir" {
+  value = var.ovpn_config_directory
+}

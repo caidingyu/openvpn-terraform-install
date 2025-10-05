@@ -15,5 +15,8 @@ WORKSPACE=$1
 # Select Terraform Workspace
 terraform workspace select "${WORKSPACE}"
 
+# Remove local OpenVPN client configuration directory
+rm -rf $(terraform output -raw ovpn_client_config_dir)
+
 # Terraform Commands
 terraform destroy -var-file=settings/${WORKSPACE}.tfvars
