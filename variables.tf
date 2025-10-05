@@ -3,8 +3,9 @@ variable "aws_region" {
   default     = "eu-west-2"
 }
 
-variable "shared_credentials_file" {
-  description = "The location of the AWS shared credentials file (e.g. ~dominic/.aws/credentials)"
+variable "shared_credentials_files" {
+  type        = list(string)
+  description = "The location of the AWS shared credentials files (e.g. ['~/.aws/credentials'])"
 }
 
 variable "profile" {
@@ -23,7 +24,7 @@ variable "cidr_block" {
 
 variable "instance_type" {
   description = "The instance type to use"
-  default     = "t2.micro"
+  default     = "t3.micro"
 }
 
 variable "instance_root_block_device_volume_size" {

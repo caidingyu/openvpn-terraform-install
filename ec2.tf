@@ -42,7 +42,7 @@ resource "aws_instance" "openvpn" {
   ]
 
   root_block_device {
-    volume_type           = "gp2"
+    volume_type           = "gp3"
     volume_size           = var.instance_root_block_device_volume_size
     delete_on_termination = true
   }
@@ -55,7 +55,7 @@ resource "aws_instance" "openvpn" {
 
 resource "aws_eip" "openvpn_eip" {
   instance = aws_instance.openvpn.id
-  vpc      = true
+  domain   = "vpc"
 }
 
 resource "null_resource" "openvpn_bootstrap" {
