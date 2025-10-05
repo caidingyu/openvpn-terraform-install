@@ -50,6 +50,7 @@ resource "aws_instance" "openvpn" {
   tags = {
     Name        = var.tag_name
     Provisioner = "Terraform"
+    Schedule    = var.schedules.china_daytime.tag_value
   }
 }
 
@@ -75,9 +76,9 @@ resource "null_resource" "openvpn_bootstrap" {
       "chmod +x openvpn-install.sh",
       <<EOT
       sudo AUTO_INSTALL=y \
-           APPROVE_IP=${aws_eip.openvpn_eip.public_ip} \
-           ENDPOINT=${aws_eip.openvpn_eip.public_dns} \
-           ./openvpn-install.sh
+      APPROVE_IP=${aws_eip.openvpn_eip.public_ip} \
+      ENDPOINT=${aws_eip.openvpn_eip.public_dns} \
+      ./openvpn-install.sh
       
 EOT
       ,

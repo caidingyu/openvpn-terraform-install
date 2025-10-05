@@ -64,3 +64,31 @@ variable "ovpn_config_directory" {
   default     = "generated/ovpn-config"
 }
 
+variable "schedule_tag_key" {
+  description = "EC2 tag key used to select instances for a schedule"
+  type        = string
+  default     = "Schedule"
+}
+
+variable "schedules" {
+  description = <<EOT
+Map of schedules. Each item creates two SSM associations (start/stop) targeting
+instances with tag "<schedule_tag_key>=<tag_value>".
+Times are CRON in *UTC* because SSM State Manager uses UTC only.
+EOT
+  type = map(object({
+    tag_value  : string
+    start_cron : string  # e.g., "cron(0 19 ? * MON-FRI *)"
+    stop_cron  : string  # e.g., "cron(0 07 ? * MON-FRI *)"
+    enabled    : optional(bool, true)
+  }))
+  default = {
+    china_daytime = {
+      tag_value  = "china-daytime"
+      # Example for 08:00–24:00 Pacific/Beijing during CST (UTC+8):
+      # 08:30 CST => 00:30 UTC same day, 23:30 CST => 15:30 UTC same day.
+      start_cron = "cron(30 0 ? * * *)" # 8:30am CST everyday
+      stop_cron  = "cron(30 15 ? * * *)" # 11:30pm CST everyday
+    }
+  }
+}
